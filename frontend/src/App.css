@@ -2,10 +2,57 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 5vh;
+  flex-direction: column;
 }
 
 .game-heading {
   background-color: antiquewhite;
   padding: 5px 20px;
   border-radius: 5px;
+  text-align: center;
+  font-size: 35px;
+}
+
+.square-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+.move-detection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5vw;
+  width: 400px;
+}
+
+.left,
+.right {
+  height: 40px;
+  width: 100px;
+  background-color: antiquewhite;
+  border-radius: 30%;
+  padding-top: 7px;
+  text-align: center;
+  padding-bottom: 4px;
+  font-size: 17px;
+}
+
+.finished-state {
+  font-size: 30px;
+  text-align: center;
+}
+
+.playOnline {
+  font-weight: 700;
+  border: none;
+  background-color: #e4ca56;
+  font-size: 60px;
+  cursor: pointer;
+  margin-top: 40vh;
+  padding: 6px 10px;
+  border-radius: 5px;
+  outline: none;
 }
