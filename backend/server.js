@@ -24,6 +24,7 @@ const allUsers = {};
 const allRooms = [];
 
 io.on("connection", (socket) => {
+  console.log("user  connected" + socket.id);
   allUsers[socket.id] = {
     socket: socket,
     online: true,

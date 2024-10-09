@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-
+import { io } from "socket.io-client";
 import Square from "./component/Square";
 
 const renderForm = [
@@ -15,6 +15,7 @@ const App = () => {
   const [finishedState, setFinishedState] = useState(false);
   const [finishedArrayState, setFinishedArrayState] = useState([]);
   const [playOnline, setPlayOnline] = useState(false);
+  const [socket, setSocket] = useState(null);
 
   const checkWinner = () => {
     // row dynamic
@@ -73,7 +74,23 @@ const App = () => {
     }
   }, [gameState]);
 
-  function playOnlineClick() {}
+  // useEffect(() => {
+  //   console.log(socket?.connected);
+  //   if (socket?.connected) {
+  //     setPlayOnline(true);
+  //   }
+  // }, [socket]);
+
+  socket?.on("connect", function () {
+    setPlayOnline(true);
+  });
+
+  function playOnlineClick() {
+    const newsocket = io("http://localhost:4000/", {
+      autoConnect: true,
+    });
+    setSocket(newsocket);
+  }
 
   if (!playOnline) {
     return (
