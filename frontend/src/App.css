@@ -3,3 +3,9 @@
   justify-content: center;
   align-items: center;
 }
+
+.game-heading {
+  background-color: antiquewhite;
+  padding: 5px 20px;
+  border-radius: 5px;
+}
