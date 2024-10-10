@@ -33,7 +33,7 @@ const Square = (props) => {
     });
   };
 
-  console.log(id + " id");
+  // console.log(id + " id");
   return (
     <div
       className={`square ${finishedState ? "not-allowed" : ""} ${

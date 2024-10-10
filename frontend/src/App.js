@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { io } from "socket.io-client";
 import Square from "./component/Square";
+import Swal from "sweetalert2";
 
 const renderForm = [
   [1, 2, 3],
@@ -16,6 +17,8 @@ const App = () => {
   const [finishedArrayState, setFinishedArrayState] = useState([]);
   const [playOnline, setPlayOnline] = useState(false);
   const [socket, setSocket] = useState(null);
+  const [playerName, setPlayerName] = useState("");
+  const [opponentName, setOpponentName] = useState(null);
 
   const checkWinner = () => {
     // row dynamic
@@ -74,21 +77,38 @@ const App = () => {
     }
   }, [gameState]);
 
-  // useEffect(() => {
-  //   console.log(socket?.connected);
-  //   if (socket?.connected) {
-  //     setPlayOnline(true);
-  //   }
-  // }, [socket]);
-
   socket?.on("connect", function () {
     setPlayOnline(true);
   });
 
-  function playOnlineClick() {
+  const takePlayerName = async () => {
+    const result = await Swal.fire({
+      title: "Enter your name",
+      input: "text",
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to write something!";
+        }
+      },
+    });
+    return result;
+  };
+
+  async function playOnlineClick() {
+    const result = await takePlayerName();
+    console.log(result);
+
+    if (!result.isConfirmed) {
+      return;
+    }
+    const username = result.value;
+    setPlayerName(username);
+
     const newsocket = io("http://localhost:4000/", {
       autoConnect: true,
     });
+    newsocket?.emit("request_to_play", { playerName: username });
     setSocket(newsocket);
   }
 
@@ -98,6 +118,14 @@ const App = () => {
         <button onClick={playOnlineClick} className="playOnline">
           Play Online
         </button>
+      </div>
+    );
+  }
+
+  if (playOnline && !opponentName) {
+    return (
+      <div className="waiting">
+        <p>Waiting for opponent</p>
       </div>
     );
   }
