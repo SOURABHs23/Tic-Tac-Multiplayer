@@ -69,3 +69,11 @@
   right: 0;
   bottom: 0;
 }
+
+.current-move-cross {
+  background-color: #2fa7f0 !important;
+}
+
+.current-move-circle {
+  background-color: #dd789a !important;
+}

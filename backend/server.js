@@ -31,38 +31,57 @@ io.on("connection", (socket) => {
     online: true,
   };
 
-  //   console.log(allUsers[socket.id]);
-
   socket.on("request_to_play", (data) => {
     const currentUser = allUsers[socket.id];
     currentUser.playerName = data.playerName;
-    console.log(currentUser);
 
     let opponentPlayer;
 
     for (const key in allUsers) {
       const user = allUsers[key];
+      console.log(user.playerName + " userssss");
 
-      if (user.online && !user.playing) {
+      if (user.online && !user.playing && socket.id !== key) {
+        console.log("uo");
         opponentPlayer = user;
         break;
       }
+    }
 
-      if (opponentPlayer) {
-        console.log("Oppenent found");
-      } else {
-        console.log("Opponent not found");
-      }
+    console.log(opponentPlayer?.playerName + "openentpayer");
+
+    if (opponentPlayer) {
+      currentUser.socket.emit("OpponentFound", {
+        opponentName: opponentPlayer.playerName,
+        playingAs: "circle",
+      });
+      opponentPlayer.socket.emit("OpponentFound", {
+        opponentName: currentUser.playerName,
+        playingAs: "cross",
+      });
+
+      currentUser.socket.on("playerMoveFromClient", (data) => {
+        opponentPlayer.socket.emit("playerMoveFromServer", {
+          ...data,
+        });
+      });
+
+      opponentPlayer.socket.on("playerMoveFromClient", (data) => {
+        currentUser.socket.emit("playerMoveFromServer", {
+          ...data,
+        });
+      });
+
+      console.log("Oppenent foundd");
+    } else {
+      currentUser.socket.emit("OpponentNotFound");
+      console.log("Opponent not found");
     }
   });
 
   socket.on("disconnect", function () {
-    allUsers[socket.id] = {
-      socket: socket,
-      online: false,
-    };
-
-    console.log(allUsers[socket.id]);
+    const currentUser = allUsers[socket.id];
+    currentUser.online = false;
   });
 });
 

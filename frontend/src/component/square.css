@@ -2,7 +2,7 @@
   width: 80px;
   height: 80px;
   display: flex;
-  background-color: gray;
+  background-color: lightslategray;
   border-radius: 5px;
   /* cursor: pointer; */
   text-align: center;
@@ -30,4 +30,8 @@
 
 .cross-won {
   background-color: skyblue;
+}
+
+.grey-background {
+  background-color: grey !important;
 }
